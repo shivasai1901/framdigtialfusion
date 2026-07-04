@@ -1,0 +1,675 @@
+/* ============================================================
+   FRAM DIGITAL FUSION — Auth Pages
+   Login · Signup · Role Selection
+   ============================================================ */
+
+/* ── Auth Layout ──────────────────────────────────────────── */
+.auth-page {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--space-4);
+  overflow: hidden;
+}
+
+/* ── Vibrant Background Overlay ───────────────────────────── */
+.auth-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 85%, rgba(5, 150, 105, 0.2) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 85% 15%, rgba(124, 58, 237, 0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 30% at 75% 75%, rgba(244, 63, 94, 0.1) 0%, transparent 50%);
+  z-index: 0;
+  pointer-events: none;
+  animation: auth-bg-shift 12s ease-in-out infinite alternate;
+}
+
+@keyframes auth-bg-shift {
+  0% { opacity: 1; filter: hue-rotate(0deg); }
+  50% { opacity: 0.85; }
+  100% { opacity: 1; filter: hue-rotate(15deg); }
+}
+
+/* ── Floating Decorative Elements ─────────────────────────── */
+.auth-page::after {
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  top: -150px;
+  right: -150px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: float-decor 8s ease-in-out infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes float-decor {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-30px, 20px) scale(1.05); }
+  66% { transform: translate(15px, -15px) scale(0.95); }
+}
+
+.auth-floating-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  z-index: 0;
+  animation: float-orb 10s ease-in-out infinite;
+}
+
+.auth-floating-orb:nth-child(1) {
+  width: 300px;
+  height: 300px;
+  background: rgba(5, 150, 105, 0.12);
+  bottom: -100px;
+  left: -80px;
+  animation-delay: 0s;
+}
+
+.auth-floating-orb:nth-child(2) {
+  width: 200px;
+  height: 200px;
+  background: rgba(124, 58, 237, 0.1);
+  top: 10%;
+  right: 5%;
+  animation-delay: -3s;
+}
+
+.auth-floating-orb:nth-child(3) {
+  width: 150px;
+  height: 150px;
+  background: rgba(245, 158, 11, 0.08);
+  bottom: 20%;
+  right: 15%;
+  animation-delay: -6s;
+}
+
+@keyframes float-orb {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-40px) scale(1.08); }
+}
+
+/* ── Grid Pattern Overlay ─────────────────────────────────── */
+.auth-grid-pattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+}
+
+/* ── Auth Card (Glassmorphism) ────────────────────────────── */
+.auth-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  background: rgba(17, 24, 39, 0.65);
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--border-radius-2xl);
+  padding: var(--space-10);
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.5),
+    0 0 80px rgba(5, 150, 105, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  animation: auth-card-enter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+@keyframes auth-card-enter {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ── Shimmer edge on card ─ */
+.auth-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(16, 185, 129, 0.3),
+    rgba(139, 92, 246, 0.3),
+    rgba(245, 158, 11, 0.2),
+    transparent
+  );
+}
+
+.auth-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  right: 20%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+}
+
+/* ── Auth Header ──────────────────────────────────────────── */
+.auth-header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.auth-logo {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-3);
+  animation: auth-logo-pulse 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.3));
+}
+
+@keyframes auth-logo-pulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.3)); }
+  50% { transform: scale(1.05); filter: drop-shadow(0 0 30px rgba(16, 185, 129, 0.5)); }
+}
+
+.auth-title {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  letter-spacing: var(--tracking-tight);
+  margin-bottom: var(--space-1);
+  background: linear-gradient(135deg, var(--emerald-400) 0%, var(--amber-400) 50%, var(--purple-400) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradient-text-flow 4s ease-in-out infinite;
+}
+
+@keyframes gradient-text-flow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.auth-subtitle {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  line-height: var(--leading-relaxed);
+}
+
+/* ── Auth Form ────────────────────────────────────────────── */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.auth-form .form-group {
+  position: relative;
+}
+
+.auth-form .form-group label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  margin-bottom: var(--space-1);
+}
+
+.auth-input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  padding-left: var(--space-10);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  background: rgba(10, 15, 26, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--border-radius-lg);
+  outline: none;
+  transition: all var(--transition-base);
+}
+
+.auth-input::placeholder {
+  color: var(--text-muted);
+}
+
+.auth-input:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(10, 15, 26, 0.6);
+}
+
+.auth-input:focus {
+  border-color: var(--emerald-500);
+  background: rgba(10, 15, 26, 0.7);
+  box-shadow:
+    0 0 0 3px rgba(16, 185, 129, 0.1),
+    0 0 20px rgba(16, 185, 129, 0.08),
+    inset 0 0 20px rgba(16, 185, 129, 0.03);
+}
+
+/* ── Input Icon ─ */
+.auth-input-wrapper {
+  position: relative;
+}
+
+.auth-input-icon {
+  position: absolute;
+  left: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+  transition: color var(--transition-base);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.auth-input:focus ~ .auth-input-icon,
+.auth-input-wrapper:focus-within .auth-input-icon {
+  color: var(--emerald-400);
+}
+
+/* ── Animated underline on focus ─ */
+.auth-input-line {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--gradient-emerald);
+  border-radius: var(--border-radius-full);
+  transition: all var(--transition-base);
+  transform: translateX(-50%);
+}
+
+.auth-input:focus ~ .auth-input-line,
+.auth-input-wrapper:focus-within .auth-input-line {
+  width: 100%;
+}
+
+/* ── Role Selector ────────────────────────────────────────── */
+.role-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin: var(--space-2) 0;
+}
+
+.role-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-5) var(--space-3);
+  background: rgba(10, 15, 26, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--border-radius-xl);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  overflow: hidden;
+}
+
+.role-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.02) 100%);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.role-card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.role-card:hover::before {
+  opacity: 1;
+}
+
+.role-card.active {
+  border-color: var(--emerald-500);
+  background: rgba(16, 185, 129, 0.08);
+  box-shadow:
+    0 0 0 3px rgba(16, 185, 129, 0.1),
+    0 0 30px rgba(16, 185, 129, 0.08);
+}
+
+.role-card.active.buyer-role {
+  border-color: var(--purple-500);
+  background: rgba(139, 92, 246, 0.08);
+  box-shadow:
+    0 0 0 3px rgba(139, 92, 246, 0.1),
+    0 0 30px rgba(139, 92, 246, 0.08);
+}
+
+.role-card-emoji {
+  font-size: 2rem;
+  transition: transform var(--transition-spring);
+}
+
+.role-card:hover .role-card-emoji {
+  transform: scale(1.15) rotate(-5deg);
+}
+
+.role-card.active .role-card-emoji {
+  transform: scale(1.2);
+  animation: role-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes role-bounce {
+  0% { transform: scale(0.8); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1.2); }
+}
+
+.role-card-title {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.role-card-desc {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  text-align: center;
+  line-height: var(--leading-relaxed);
+}
+
+/* Active check indicator */
+.role-card-check {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  width: 20px;
+  height: 20px;
+  border-radius: var(--border-radius-full);
+  background: var(--gradient-emerald);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: white;
+  transform: scale(0);
+  transition: transform var(--transition-spring);
+}
+
+.role-card.active .role-card-check {
+  transform: scale(1);
+}
+
+.role-card.active.buyer-role .role-card-check {
+  background: var(--gradient-purple);
+}
+
+/* ── Auth Submit Button ───────────────────────────────────── */
+.auth-submit {
+  width: 100%;
+  padding: var(--space-3-5) var(--space-6);
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: white;
+  background: var(--gradient-emerald);
+  border: none;
+  border-radius: var(--border-radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: var(--tracking-wide);
+  box-shadow:
+    0 4px 15px rgba(16, 185, 129, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.auth-submit::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.auth-submit:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 25px rgba(16, 185, 129, 0.35),
+    0 0 40px rgba(16, 185, 129, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.auth-submit:hover::before {
+  opacity: 1;
+}
+
+.auth-submit:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.auth-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ── Loading state for submit ─ */
+.auth-submit.loading {
+  pointer-events: none;
+  color: transparent;
+}
+
+.auth-submit.loading::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  margin: -10px 0 0 -10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: auth-spin 0.6s linear infinite;
+}
+
+@keyframes auth-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Auth Toggle (Login ↔ Signup) ─────────────────────────── */
+.auth-toggle {
+  text-align: center;
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.auth-toggle-text {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+.auth-toggle-link {
+  color: var(--emerald-400);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: none;
+  background: none;
+  font-size: var(--text-sm);
+  padding: 0;
+}
+
+.auth-toggle-link:hover {
+  color: var(--emerald-300);
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+/* ── Auth Content Transitions ─────────────────────────────── */
+.auth-content-enter {
+  animation: auth-content-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes auth-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.auth-content-exit {
+  animation: auth-content-out 0.2s ease-in forwards;
+}
+
+@keyframes auth-content-out {
+  to {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+}
+
+/* ── Divider with text ("or") ─────────────────────────────── */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: var(--space-4) 0;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-default), transparent);
+}
+
+.auth-divider span {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+}
+
+/* ── Password Strength Indicator ──────────────────────────── */
+.password-strength {
+  display: flex;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.password-strength-bar {
+  flex: 1;
+  height: 3px;
+  background: var(--dark-600);
+  border-radius: var(--border-radius-full);
+  overflow: hidden;
+  transition: background var(--transition-base);
+}
+
+.password-strength-bar.weak { background: var(--coral-500); }
+.password-strength-bar.medium { background: var(--amber-500); }
+.password-strength-bar.strong { background: var(--emerald-500); }
+
+.password-strength-text {
+  font-size: var(--text-xs);
+  margin-top: var(--space-1);
+  color: var(--text-muted);
+}
+
+/* ── Auth Error/Success Messages ──────────────────────────── */
+.auth-message {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--border-radius-lg);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  animation: auth-message-in 0.3s ease forwards;
+}
+
+@keyframes auth-message-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.auth-message-error {
+  background: rgba(244, 63, 94, 0.1);
+  border: 1px solid rgba(244, 63, 94, 0.2);
+  color: var(--coral-400);
+}
+
+.auth-message-success {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  color: var(--emerald-400);
+}
+
+/* ── Language Switcher (in Auth) ──────────────────────────── */
+.auth-lang-switcher {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-1);
+  margin-top: var(--space-4);
+}
+
+.auth-lang-btn {
+  padding: var(--space-1) var(--space-2-5);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.auth-lang-btn:hover {
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.auth-lang-btn.active {
+  color: var(--emerald-400);
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.15);
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .auth-card {
+    padding: var(--space-6) var(--space-5);
+    border-radius: var(--border-radius-xl);
+    max-width: 100%;
+  }
+
+  .auth-title {
+    font-size: var(--text-xl);
+  }
+
+  .role-card {
+    padding: var(--space-4) var(--space-2);
+  }
+
+  .role-card-emoji {
+    font-size: 1.5rem;
+  }
+}
